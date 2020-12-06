@@ -131,11 +131,6 @@ public class HelloWorld {
 
         String params = cmd.substring(instruction.length()).trim();
 
-        // 这个这种表达式很难写，因为有两者规则，不知道如何写
-        //第一种规则：空格区分，第二种规则：引号间隔；而且这两者规则可以组合使用
-        //分析：引号的优先级高于非引号，于是可以分两步处理，先处理引号，然后使用非引号，这样是否合理
-        //简化处理，要么全部使用引号，要么不使用引号这样判断就简单了，后续再考虑组合的情况；一定有折中的方案，以及折中的折中
-
         Object[] paramParts = new Object[]{parseVariable(parseParams(params))};
 
         Method method = getMethod(instruction);
