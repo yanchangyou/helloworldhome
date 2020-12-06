@@ -1,0 +1,5 @@
+# define a variable
+set message "hello, world!"
+
+# print the message
+print $message
