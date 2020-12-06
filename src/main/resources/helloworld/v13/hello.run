@@ -1,0 +1,7 @@
+ifPrint 0 hello0
+ifPrint 1 hello1
+print 1234
+hello world
+print 234
+print 'hello, world!'
+print "hello, world!"

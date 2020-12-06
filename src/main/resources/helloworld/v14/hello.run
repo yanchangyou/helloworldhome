@@ -1,0 +1,10 @@
+set message "hello, world!"
+print $message
+
+set who world
+hello $who
+
+set name run
+hello $name
+
+print $name
