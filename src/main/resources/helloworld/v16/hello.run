@@ -1,0 +1,9 @@
+# define a variable
+set message "hello, world!"
+
+# print the message
+print $message
+
+loop 3: print $message
+
+loop 3: print $i
