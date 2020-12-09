@@ -1,0 +1,25 @@
+# define a variable
+set message "hello, world!"
+
+# print the message
+print ${message}
+
+# more statement
+# print 1;print 2;print 3
+
+# loop
+loop 1: print ${message}
+
+loop 2: print ${i}:${message}
+
+loop 3: print "${i} ${message}"
+
+
+# if when condition is true execute cmd, else not
+if true: print true
+
+if false: print false
+
+if true: print true; else:print false
+
+if false: print true; else:print false
