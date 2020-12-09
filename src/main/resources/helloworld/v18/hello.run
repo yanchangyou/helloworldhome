@@ -1,0 +1,18 @@
+# define a variable
+set message "hello, world!"
+
+# print the message
+print ${message}
+
+# loop
+loop 1: print ${message}
+
+loop 2: print ${i}:${message}
+
+loop 3: print "${i} ${message}"
+
+
+# if
+if true: print true
+
+if false: print false
