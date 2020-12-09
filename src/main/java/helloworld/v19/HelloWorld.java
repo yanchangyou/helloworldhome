@@ -106,6 +106,13 @@ public class HelloWorld {
         return runPath;
     }
 
+    /**
+     * 流程处理层
+     *
+     * @param flow
+     * @param cmd
+     * @throws Exception
+     */
     static void executeFlow(String flow, String cmd) throws Exception {
         if (flow == null) {
             executeCmd(cmd);
@@ -158,7 +165,6 @@ public class HelloWorld {
         }
 
         executeFlow(flow, realCmd);
-
     }
 
     /**
