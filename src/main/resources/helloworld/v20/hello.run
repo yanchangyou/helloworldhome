@@ -20,6 +20,11 @@ if true: print true
 
 if false: print false
 
+# else must be [else:]
 if true: print true; else:print false
 
 if false: print true; else:print false
+
+if false: print true  else: print false
+
+if true: print true  else: print false
