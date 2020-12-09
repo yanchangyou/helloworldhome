@@ -1,4 +1,4 @@
-package helloworld.v18;
+package helloworld.v19;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,7 +71,7 @@ public class HelloWorld {
         String cmdFilePath = getCmdFilePath(cmdFile);
         List<String> cmdList = readCmdFile(cmdFilePath);
         for (String cmd : cmdList) {
-            executeCmd(cmd);
+            executeCmdWrap(cmd);
         }
 //                System.out.println("end run!");
         System.out.println();
@@ -106,14 +106,35 @@ public class HelloWorld {
         return runPath;
     }
 
+    static void executeFlow(String flow, String cmd) throws Exception {
+        if (flow == null) {
+            executeCmd(cmd);
+        } else {
+            List<String> flowParts = parse(flow);
+            String flowName = flowParts.get(0);
+            if ("loop".equals(flowName)) {
+                int times = Integer.parseInt(flowParts.get(1));
+                for (int i = 0; i < times; i++) {
+                    nameValueMap.put("i", i + "");
+                    executeCmd(cmd);
+                    nameValueMap.remove("i");
+                }
+            } else if ("if".equals(flowName)) {
+                String condition = flowParts.get(1);
+                if ("true".equals(condition)) {
+                    executeCmd(cmd);
+                }
+            }
+        }
+    }
+
     /**
      * 执行命令层
      *
      * @param cmd
      * @throws Exception
      */
-    private static void executeCmd(String cmd) throws Exception {
-
+    private static void executeCmdWrap(String cmd) throws Exception {
         /**
          * 空格处理
          */
@@ -127,40 +148,35 @@ public class HelloWorld {
             return;
         }
 
+        String flow = null;
+        String realCmd;
+        if (cmd.matches("^(loop|if)\\b.*")) {
+            flow = cmd.substring(0, cmd.indexOf(":")).trim();
+            realCmd = cmd.substring(cmd.indexOf(":") + 1).trim();
+        } else {
+            realCmd = cmd;
+        }
+
+        executeFlow(flow, realCmd);
+
+    }
+
+    /**
+     * 执行命令层
+     *
+     * @param cmd
+     * @throws Exception
+     */
+    private static void executeCmd(String cmd) throws Exception {
+
         List<String> cmdParts = parse(cmd);
 
         String instruction = cmdParts.get(0);
 
-        int times = 1;
-        if ("loop".equals(instruction)) {
-
-            String timesString = cmd.substring("loop".length(), cmd.indexOf(":"));
-            times = Integer.parseInt(timesString.trim());
-
-            cmd = cmd.substring(cmd.indexOf(":") + 1);
-            cmdParts = parse(cmd);
-            instruction = cmdParts.get(0);
-        } else if ("if".equals(instruction)) {
-
-            String condition = cmd.substring("if".length(), cmd.indexOf(":")).trim();
-
-            if(!"true".equals(condition)) {
-               return;
-            }
-
-            cmd = cmd.substring(cmd.indexOf(":") + 1);
-            cmdParts = parse(cmd);
-            instruction = cmdParts.get(0);
-        }
-
         Method method = getMethod(instruction);
 
-        for (int i = 0; i < times; i++) {
-            nameValueMap.put("i", i + "");
-            Object[] paramParts = new Object[]{parseVariable(cmdParts.subList(1, cmdParts.size()))};
-            method.invoke(null, paramParts);
-            nameValueMap.remove("i");
-        }
+        Object[] paramParts = new Object[]{parseVariable(cmdParts.subList(1, cmdParts.size()))};
+        method.invoke(null, paramParts);
     }
 
     /**
