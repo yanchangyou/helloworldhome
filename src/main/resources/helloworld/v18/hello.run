@@ -12,7 +12,7 @@ loop 2: print ${i}:${message}
 loop 3: print "${i} ${message}"
 
 
-# if
+# if when condition is true execute cmd, else not
 if true: print true
 
 if false: print false
