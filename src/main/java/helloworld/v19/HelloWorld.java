@@ -107,35 +107,6 @@ public class HelloWorld {
     }
 
     /**
-     * 流程处理层
-     *
-     * @param flow
-     * @param cmd
-     * @throws Exception
-     */
-    static void executeFlow(String flow, String cmd) throws Exception {
-        if (flow == null) {
-            executeCmd(cmd);
-        } else {
-            List<String> flowParts = parse(flow);
-            String flowName = flowParts.get(0);
-            if ("loop".equals(flowName)) {
-                int times = Integer.parseInt(flowParts.get(1));
-                for (int i = 0; i < times; i++) {
-                    nameValueMap.put("i", i + "");
-                    executeCmd(cmd);
-                    nameValueMap.remove("i");
-                }
-            } else if ("if".equals(flowName)) {
-                String condition = flowParts.get(1);
-                if ("true".equals(condition)) {
-                    executeCmd(cmd);
-                }
-            }
-        }
-    }
-
-    /**
      * 执行命令层
      *
      * @param cmd
@@ -165,6 +136,35 @@ public class HelloWorld {
         }
 
         executeFlow(flow, realCmd);
+    }
+
+    /**
+     * 流程处理层
+     *
+     * @param flow
+     * @param cmd
+     * @throws Exception
+     */
+    static void executeFlow(String flow, String cmd) throws Exception {
+        if (flow == null) {
+            executeCmd(cmd);
+        } else {
+            List<String> flowParts = parse(flow);
+            String flowName = flowParts.get(0);
+            if ("loop".equals(flowName)) {
+                int times = Integer.parseInt(flowParts.get(1));
+                for (int i = 0; i < times; i++) {
+                    nameValueMap.put("i", i + "");
+                    executeCmd(cmd);
+                    nameValueMap.remove("i");
+                }
+            } else if ("if".equals(flowName)) {
+                String condition = flowParts.get(1);
+                if ("true".equals(condition)) {
+                    executeCmd(cmd);
+                }
+            }
+        }
     }
 
     /**
