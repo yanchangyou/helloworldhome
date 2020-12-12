@@ -13,6 +13,16 @@ import java.util.regex.Pattern;
  * 变更：
  * 1，支持分号分隔语句
  * 2，支持if else
+ * <p>
+ * <p>
+ * 思索：
+ * 1，表达式可以独立拆分出来，单独解析，然后通过变量传递
+ * 2，流程类无法拆分
+ * 3，括号表达嵌套的概念，任意嵌套，任意组合
+ * 4，通过goto实现复杂逻辑，通过函数封装细节
+ * 5，边界字符，是否有歧义
+ * 6，层次结构：{{},{}} ((),(),(()));[[][]] <>,//,./@#&*
+ * 7，正则语义表达，能使用正则表达表达的语法结构；正则+嵌套：上下文无关文法；
  */
 public class HelloWorld {
 
@@ -180,20 +190,28 @@ public class HelloWorld {
             } else if ("if".equals(flowName)) {
                 List<String> cmdParts = parse(cmd);
                 String ifCmd = cmd;
+                String elseifCmd = null;
                 String elseCmd = null;
                 for (String part : cmdParts) {
                     if ("else".equals(part)) {
                         elseCmd = cmd.substring(cmd.indexOf("else:") + "else:".length()).trim();
+                    } else if ("elseif".equals(part)) {
+                        elseifCmd = cmd.substring(cmd.indexOf("elseif") + "elseif".length()).trim();
                     }
                 }
                 if (elseCmd != null) {
                     ifCmd = cmd.substring(0, cmd.indexOf("else:")).trim();
+                }
+                if (elseifCmd != null) {
+                    ifCmd = cmd.substring(0, cmd.indexOf("elseif")).trim();
                 }
 
                 String condition = flowParts.get(1);
                 if ("true".equals(condition)) {
                     executeCmd(ifCmd);
                 } else if (elseCmd != null) {
+                    executeCmd(elseCmd);
+                } else if (elseifCmd != null) {
                     executeCmd(elseCmd);
                 }
             }
@@ -320,5 +338,105 @@ public class HelloWorld {
         }
 
         return paramList;
+    }
+}
+
+class If {
+
+    String ifExpress;
+    String ifStatement;
+    List<String> elseifExpress = new ArrayList();
+    List<String> elseifStatement = new ArrayList();
+    String elseStatement;
+
+    If(String ifCode) {
+        if (ifCode == null) {
+            throw new RuntimeException("if statement can't null");
+        }
+        ifCode = ifCode.trim();
+        if (!ifCode.startsWith("if")) {
+            throw new RuntimeException("must be start with if");
+        }
+
+        Pattern ifPatternFirst = Pattern.compile("(\\s*if\\s*(true|false)\\s*:\\s*(\\w+\\s\\w+)\\s*)(.*)");
+
+        Matcher matcher = ifPatternFirst.matcher(ifCode);
+
+        if (matcher.find()) {
+            ifExpress = matcher.group(2);
+            ifStatement = matcher.group(3);
+            String otherStatement = matcher.group(4);
+            if (otherStatement != null) {
+
+                Pattern elseifPattern = Pattern.compile("((:elseif\\s*\\w+\\s*:\\s*\\w+\\s*\\w+\\s*)*)(:else:\\s*((print|hello)\\s*\\w+\\s*))");
+
+                Matcher otherMatcher = elseifPattern.matcher(otherStatement);
+                if (otherMatcher.find()) {
+                    String elseIfStatement = otherMatcher.group(1);
+                    elseStatement = otherMatcher.group(4);
+
+                    if (elseIfStatement != null) {
+
+                        Pattern onlyElseifPattern = Pattern.compile(":elseif\\s*(\\w+)\\s*:\\s*(\\w+\\s*\\w+)\\s*");
+                        Matcher onlyElseifMather = onlyElseifPattern.matcher(elseIfStatement);
+
+                        while (onlyElseifMather.find()) {
+                            String onlyElseifExpress = onlyElseifMather.group(1);
+                            elseifExpress.add(onlyElseifExpress);
+                            String onlyElseifStatement = onlyElseifMather.group(2);
+                            elseifStatement.add(onlyElseifStatement);
+                        }
+
+                    }
+                }
+            }
+
+        } else {
+            throw new RuntimeException("if statement must match: " + ifPatternFirst);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "If{" +
+                "ifExpress='" + ifExpress + '\'' +
+                ", ifStatement='" + ifStatement + '\'' +
+                ", elseifExpress=" + elseifExpress +
+                ", elseifStatement=" + elseifStatement +
+                ", elseStatement=" + elseStatement +
+                '}';
+    }
+
+    public static void main(String[] args) {
+
+//        testRegexp();
+
+        String[] ifCodeText = {
+                "if true: hello world",
+                "if true: hello world :else: hello cosmos",
+                "if true: hello world :elseif true: print space :else: hello cosmos",
+                "if true: hello world :elseif true: print space1 :elseif true: print space2 :else: hello cosmos",
+        };
+
+        for (int i = 0; i < ifCodeText.length; i++) {
+
+            If ifCode = new If(ifCodeText[i]);
+            System.out.println(ifCode);
+        }
+
+    }
+
+    private static void testRegexp() {
+        Pattern pattern = Pattern.compile("(?<word>\\w+ )");
+        Matcher matcher = pattern.matcher("abc def ");
+        int start = 0;
+        while (matcher.find(start)) {
+            String all = matcher.group();
+            System.out.println(all);
+            String group = matcher.group("word");
+            System.out.println(group);
+//            String group2 = matcher.group(2);
+            start = matcher.end();
+        }
     }
 }
