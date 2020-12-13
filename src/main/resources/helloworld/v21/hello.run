@@ -27,7 +27,7 @@ if false: print ifElseTrue :else:print ifElseFalse
 
 if true: print ifElseIfTrue :elseif true: print ifElseIfFalse
 
-if false: print ifElseIfTrue :elseif false: print ifElseIfFalse
+if false: print ifElseIfTrue :elseif true: print ifElseIfFalse
 
 if false: print ifElseIfTrue :elseif true: print ifElseIfFalse :else: print ifElseFalse
 
