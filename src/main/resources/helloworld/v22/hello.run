@@ -1,0 +1,41 @@
+# define a variable
+set message "hello, world!"
+
+# print the message
+print ${message}
+
+# more statement
+# print 1;print 2;print 3
+
+# loop
+loop 1: print ${message}
+
+loop 2: print ${i}:${message}
+
+loop 3: print "${i} ${message}"
+
+
+# if when condition is true execute cmd, else not
+if true: print onlyIfTrue
+
+if false: print onlyIfFalse
+
+# else must be [:else:]
+if true: print ifElseTrue :else:print ifElseFalse
+
+if false: print ifElseTrue :else:print ifElseFalse
+
+if true: print ifElseIfTrue :elseif true: print ifElseIfFalse
+
+if false: print ifElseIfTrue :elseif true: print ifElseIfFalse
+
+if false: print ifElseIfTrue :elseif true: print ifElseIfFalse :else: print ifElseFalse
+
+if false: print ifElseIfTrue :elseif false: print ifElseIfFalse :else: print ifElseFalse
+
+if false: print ifElseIfTrue :elseif true: print ifElseIfFalse1 :elseif true: print ifElseIfFalse2 :else: print ifElseFalse
+
+if false: print ifElseIfTrue :elseif false: print ifElseIfFalse1 :elseif true: print ifElseIfFalse2 :else: print ifElseFalse
+
+
+
