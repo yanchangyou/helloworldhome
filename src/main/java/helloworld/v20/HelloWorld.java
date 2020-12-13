@@ -368,7 +368,8 @@ class If {
             String otherStatement = matcher.group(4);
             if (otherStatement != null) {
 
-                Pattern elseifPattern = Pattern.compile("((:elseif\\s*\\w+\\s*:\\s*\\w+\\s*\\w+\\s*)*)(:else:\\s*((print|hello)\\s*\\w+\\s*))");
+                Pattern elseifPattern = Pattern.compile("((:elseif\\s*\\w+\\s*:\\s*\\w+\\s*\\w+\\s*)*)" +
+                        "(:else:\\s*((print|hello)\\s*\\w+\\s*))");
 
                 Matcher otherMatcher = elseifPattern.matcher(otherStatement);
                 if (otherMatcher.find()) {
@@ -386,11 +387,9 @@ class If {
                             String onlyElseifStatement = onlyElseifMather.group(2);
                             elseifStatement.add(onlyElseifStatement);
                         }
-
                     }
                 }
             }
-
         } else {
             throw new RuntimeException("if statement must match: " + ifPatternFirst);
         }
