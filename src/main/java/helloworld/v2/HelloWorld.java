@@ -1,5 +1,11 @@
 package helloworld.v2;
 
+/**
+ * 一个封闭的系统
+ * 1，不用关心触发
+ * 2，不用关心执行
+ * 3，只关心按照预定的位置写代码、调用方法
+ */
 public class HelloWorld {
 
     public static void main(String[] args) {
@@ -13,11 +19,11 @@ public class HelloWorld {
      * 通过接口统一；
      *
      */
-    private static void execute() {
+    public static void execute() {
         hello();
     }
 
-    private static void hello() {
+    public static void hello() {
         System.out.println("hello, world!");
     }
 }

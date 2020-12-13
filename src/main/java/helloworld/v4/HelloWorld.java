@@ -2,6 +2,9 @@ package helloworld.v4;
 
 import java.lang.reflect.Method;
 
+/**
+ * 执行机制改变：由控制台输入内容
+ */
 public class HelloWorld {
 
     /**
@@ -17,14 +20,14 @@ public class HelloWorld {
         execute(cmd);
     }
 
-    private static void execute(String cmd) throws Exception {
+    public static void execute(String cmd) throws Exception {
 
         Method method = HelloWorld.class.getDeclaredMethod(cmd, new Class[0]);
         method.invoke(null);
 
     }
 
-    private static void hello() {
+    public static void hello() {
         System.out.println("hello, world!");
     }
 }

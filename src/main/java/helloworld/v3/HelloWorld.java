@@ -17,18 +17,20 @@ public class HelloWorld {
      * 命令和命令的执行独立开来；
      * 命令是面向用户的，命令执行是面向机器的
      * 代码入口：
+     * <p>
+     * 把封闭的系统改造成开放系统：外界可以传递要执行的方法
      *
      * @param cmd
      * @throws Exception
      */
-    private static void execute(String cmd) throws Exception {
+    public static void execute(String cmd) throws Exception {
 
         Method method = HelloWorld.class.getDeclaredMethod(cmd, new Class[0]);
         method.invoke(null);
 
     }
 
-    private static void hello() {
+    public static void hello() {
         System.out.println("hello, world!");
     }
 }

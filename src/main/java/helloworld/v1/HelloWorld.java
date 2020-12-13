@@ -11,7 +11,7 @@ public class HelloWorld {
      * 复用思想：代码级别复用；
      * 抽取、复用
      */
-    private static void hello() {
+    public static void hello() {
         System.out.println("hello, world!");
     }
 }
