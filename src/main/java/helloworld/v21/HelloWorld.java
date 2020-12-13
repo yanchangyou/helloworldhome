@@ -93,7 +93,7 @@ public class HelloWorld {
     }
 
     static boolean isIgnore(String statement) {
-        return statement.startsWith("#");
+        return statement == null || statement.startsWith("#");
     }
 
     /**
@@ -155,15 +155,7 @@ public class HelloWorld {
             return;
         }
 
-        String flow = null;
-        String realCmd;
-        if (cmd.matches("^(loop|if)\\b.*")) {
-            flow = cmd.substring(0, cmd.indexOf(":")).trim();
-            realCmd = cmd.substring(cmd.indexOf(":") + 1).trim();
-        } else {
-            realCmd = cmd;
-        }
-        if (flow != null && flow.startsWith("if")) {
+        if (cmd.startsWith("if")) {
 
             IfStatement ifStatement = new IfStatement(cmd);
             String condition = ifStatement.getIfExpress();
@@ -189,34 +181,16 @@ public class HelloWorld {
             if (!isExecuted) {
                 System.out.println("WARN: if not executed");
             }
-
-        } else {
-            executeFlow(flow, realCmd);
-        }
-
-    }
-
-    /**
-     * 流程处理层
-     *
-     * @param flow
-     * @param cmd
-     * @throws Exception
-     */
-    static void executeFlow(String flow, String cmd) throws Exception {
-        if (flow == null) {
-            executeCmd(cmd);
-        } else {
-            List<String> flowParts = parse(flow);
-            String flowName = flowParts.get(0);
-            if ("loop".equals(flowName)) {
-                int times = Integer.parseInt(flowParts.get(1));
-                for (int i = 0; i < times; i++) {
-                    nameValueMap.put("i", i + "");
-                    executeCmd(cmd);
-                    nameValueMap.remove("i");
-                }
+        } else if (cmd.startsWith("loop")) {
+            LoopStatement loopStatement = new LoopStatement(cmd);
+            int loopTimes = loopStatement.loopTimes;
+            for (int i = 0; i < loopTimes; i++) {
+                nameValueMap.put("i", i + "");
+                executeCmd(loopStatement.getStatement());
+                nameValueMap.remove("i");
             }
+        } else {
+            executeCmd(cmd);
         }
     }
 
@@ -224,9 +198,10 @@ public class HelloWorld {
      * 执行命令层
      *
      * @param cmd
+     * @return
      * @throws Exception
      */
-    private static void executeCmd(String cmd) throws Exception {
+    private static Object executeCmd(String cmd) throws Exception {
 
         List<String> cmdParts = parse(cmd);
 
@@ -235,7 +210,8 @@ public class HelloWorld {
         Method method = getMethod(instruction);
 
         Object[] paramParts = new Object[]{parseVariable(cmdParts.subList(1, cmdParts.size()))};
-        method.invoke(null, paramParts);
+        Object result = method.invoke(null, paramParts);
+        return result;
     }
 
     /**
@@ -276,10 +252,12 @@ public class HelloWorld {
      *
      * @param params
      */
-    private static void hello(List<String> params) {
+    private static String hello(List<String> params) {
         String who = params.get(0);
         who = who == null ? "world" : who;
-        System.out.println("hello, " + who + "!");
+        String result = "hello, " + who + "!";
+        System.out.println(result);
+        return result;
     }
 
     /**
@@ -287,9 +265,10 @@ public class HelloWorld {
      *
      * @param params
      */
-    private static void print(List<String> params) {
+    private static String print(List<String> params) {
         String text = params.get(0);
         System.out.println(text);
+        return text;
     }
 
 
@@ -342,4 +321,3 @@ public class HelloWorld {
         return paramList;
     }
 }
-
