@@ -216,33 +216,6 @@ public class HelloWorld {
                     executeCmd(cmd);
                     nameValueMap.remove("i");
                 }
-            } else if ("if".equals(flowName)) {
-                List<String> cmdParts = parse(cmd);
-                String ifCmd = cmd;
-                String elseifCmd = null;
-                String elseCmd = null;
-                for (String part : cmdParts) {
-                    if ("else".equals(part)) {
-                        elseCmd = cmd.substring(cmd.indexOf("else:") + "else:".length()).trim();
-                    } else if ("elseif".equals(part)) {
-                        elseifCmd = cmd.substring(cmd.indexOf("elseif") + "elseif".length()).trim();
-                    }
-                }
-                if (elseCmd != null) {
-                    ifCmd = cmd.substring(0, cmd.indexOf("else:")).trim();
-                }
-                if (elseifCmd != null) {
-                    ifCmd = cmd.substring(0, cmd.indexOf("elseif")).trim();
-                }
-
-                String condition = flowParts.get(1);
-                if ("true".equals(condition)) {
-                    executeCmd(ifCmd);
-                } else if (elseCmd != null) {
-                    executeCmd(elseCmd);
-                } else if (elseifCmd != null) {
-                    executeCmd(elseCmd);
-                }
             }
         }
     }
