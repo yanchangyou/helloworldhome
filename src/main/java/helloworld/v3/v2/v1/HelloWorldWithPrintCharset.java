@@ -1,21 +1,28 @@
-package helloworld.v3.v2;
+package helloworld.v3.v2.v1;
+
+import helloworld.v3.v1.v2.PrintCharset;
 
 /**
- * 使用点阵形式输出字符串：除了正误问题，还有精度问题，体验问题，对称问题
+ * 字符点阵的实现方式
  */
-public class HelloWorld {
+public class HelloWorldWithPrintCharset implements Printable {
 
     public static void main(String[] args) {
+
         String who = "world";
+        HelloWorldWithPrintCharset helloWorld = new HelloWorldWithPrintCharset();
+
         String text = hello(who);
-        print(text);
+
+        helloWorld.print(text);
     }
 
     private static String hello(String who) {
         return "hello, " + who + "!";
     }
 
-    private static void print(String text) {
+    @Override
+    public void print(String text) {
 
         System.out.println();
         char[] chars = text.toCharArray();
@@ -40,5 +47,4 @@ public class HelloWorld {
         System.out.print("   ");
 
     }
-
 }

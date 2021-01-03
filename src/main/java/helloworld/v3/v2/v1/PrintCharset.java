@@ -1,36 +1,12 @@
-package helloworld.v3.v1;
+package helloworld.v3.v2.v1;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 使用点阵形式输出字符串：除了正误问题，还有精度问题，体验问题，对称问题
+ * 打印字符串单独抽取出来，方便维护
  */
-public class HelloWorld {
-
-    public static void main(String[] args) {
-        String who = "world";
-        String text = hello(who);
-        print(text);
-    }
-
-    private static String hello(String who) {
-        return "hello, " + who + "!";
-    }
-
-    private static void print(String text) {
-
-        System.out.println();
-        char[] chars = text.toCharArray();
-        for (int j = 0; j < 5; j++) {
-            for (int i = 0; i < chars.length; i++) {
-                print(chars[i], j);
-                if (i >= chars.length - 1) {
-                    System.out.println();
-                }
-            }
-        }
-    }
+public class PrintCharset {
 
     static String H = "" +
             "OO    OO\n" +
@@ -102,38 +78,26 @@ public class HelloWorld {
             "        \n" +
             "   OO   \n" +
             "";
-    static Map<String, String> map = new HashMap();
+    public static Map<String, String> PRINT_CHARSET = new HashMap();
 
     static {
-        map.put("h", H);
-        map.put("H", H);
-        map.put("E", E);
-        map.put("e", E);
-        map.put("L", L);
-        map.put("l", L);
-        map.put("O", O);
-        map.put("o", O);
-        map.put("W", W);
-        map.put("w", W);
-        map.put("R", R);
-        map.put("r", R);
-        map.put("D", D);
-        map.put("d", D);
-        map.put(" ", SPACE);
-        map.put(",", COMMA);
-        map.put("!", TAN);
-    }
-
-    /**
-     * 打印字符：使用字符拼接字符，字符点阵拼接
-     *
-     * @param ch
-     */
-    private static void print(char ch, int line) {
-
-        System.out.print(map.get(ch + "").split("\n")[line]);
-        System.out.print("   ");
-
+        PRINT_CHARSET.put("h", H);
+        PRINT_CHARSET.put("H", H);
+        PRINT_CHARSET.put("E", E);
+        PRINT_CHARSET.put("e", E);
+        PRINT_CHARSET.put("L", L);
+        PRINT_CHARSET.put("l", L);
+        PRINT_CHARSET.put("O", O);
+        PRINT_CHARSET.put("o", O);
+        PRINT_CHARSET.put("W", W);
+        PRINT_CHARSET.put("w", W);
+        PRINT_CHARSET.put("R", R);
+        PRINT_CHARSET.put("r", R);
+        PRINT_CHARSET.put("D", D);
+        PRINT_CHARSET.put("d", D);
+        PRINT_CHARSET.put(" ", SPACE);
+        PRINT_CHARSET.put(",", COMMA);
+        PRINT_CHARSET.put("!", TAN);
     }
 
 }
