@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 使用点阵形式输出字符串
+ * 使用点阵形式输出字符串：除了正误问题，还有精度问题，体验问题，对称问题
  */
 public class HelloWorld {
 
@@ -54,18 +54,18 @@ public class HelloWorld {
             "OOOOOOOO\n" +
             "";
     static String O = "" +
-            "OOOOOOOO\n" +
+            " OOOOOO \n" +
             "OO    OO\n" +
             "OO    OO\n" +
             "OO    OO\n" +
-            "OOOOOOOO\n" +
+            " OOOOOO \n" +
             "";
     static String W = "" +
-            "O     O    O\n" +
-            " O   O O   O\n" +
-            " O   O O   O\n" +
-            "  O O   O O \n" +
-            "   O     O  \n" +
+            "O     O     O\n" +
+            " O   O O   O \n" +
+            " O   O O   O \n" +
+            "  O O   O O  \n" +
+            "   O     O   \n" +
             "";
     static String R = "" +
             "OOOOOOO \n" +
